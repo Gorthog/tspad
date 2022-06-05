@@ -66,7 +66,7 @@ export const App = () => {
     </html>
   `;
   return (
-    <div>
+    <div className="editor-wrapper">
       <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
       <textarea
         value={input}

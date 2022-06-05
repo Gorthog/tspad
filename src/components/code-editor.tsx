@@ -1,8 +1,13 @@
+import "bulmaswatch/superhero/bulmaswatch.min.css";
+import "./code-editor.css";
+import "./syntax.css";
 import MonacoEditor, { OnMount } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
 import { MouseEventHandler, useRef } from "react";
+import codeShift from "jscodeshift";
+import Highlighter from "monaco-jsx-highlighter";
 
 interface CodeEditorProps {
   initialValue: string;
@@ -18,26 +23,45 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     });
 
     monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
+    const highlighter = new Highlighter(
+      // @ts-ignore
+      window.monaco,
+      codeShift,
+      monacoEditor
+    );
+    highlighter.highLightOnDidChangeModelContent(
+      () => {},
+      () => {},
+      undefined,
+      () => {}
+    );
   };
 
   const onFormatClick: MouseEventHandler<HTMLButtonElement> = () => {
     const unformatted = editorRef.current?.getValue();
     if (unformatted) {
-      const formatted = prettier.format(unformatted, {
-        parser: "babel",
-        plugins: [parser],
-        useTabs: false,
-        semi: true,
-        singleQuote: true,
-        trailingComma: "all",
-      });
+      const formatted = prettier
+        .format(unformatted, {
+          parser: "babel",
+          plugins: [parser],
+          useTabs: false,
+          semi: true,
+          singleQuote: true,
+          trailingComma: "all",
+        })
+        .replace(/\n$/, "");
       editorRef.current?.setValue(formatted);
     }
   };
 
   return (
     <div>
-      <button onClick={onFormatClick}>Format</button>
+      <button
+        className="button button-format is-primary is-small"
+        onClick={onFormatClick}
+      >
+        Format
+      </button>
       <MonacoEditor
         onMount={onMount}
         value={initialValue}
