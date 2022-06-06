@@ -3,11 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import { unpkPathPlugin } from "./plugins/unpk-path-plugin";
 import CodeEditor from "./components/code-editor";
+import Preview from "./components/preview";
 
 export const App = () => {
   const ref = useRef<boolean>();
-  const iframe = useRef<HTMLIFrameElement>(null);
   const [input, setInput] = useState("");
+  const [code, setCode] = useState("");
 
   const startService = async () => {
     try {
@@ -25,11 +26,8 @@ export const App = () => {
 
   const onClick = async () => {
     if (!ref.current) {
-      1;
       return;
     }
-
-    iframe.current!.srcdoc = html;
 
     const result = await esbuild.build({
       entryPoints: ["index.js"],
@@ -41,30 +39,9 @@ export const App = () => {
       },
     });
 
-    iframe.current?.contentWindow?.postMessage(result.outputFiles[0].text, "*");
+    setCode(result.outputFiles[0].text);
   };
 
-  const html = `
-    <html>
-      <head>
-      </head>
-      <body>
-        <div id="root">
-        <script>
-          window.addEventListener('message', (event) => {
-            try {
-              eval(event.data);
-            } catch (e) {
-              const root = document.querySelector('#root');
-              root.innerHTML = '<div style="color: red;"><h4>Runtime error</h4>' + e + '</div>';
-              console.error(e);
-            }
-          }, false)
-
-        </script>
-      </body>
-    </html>
-  `;
   return (
     <div className="editor-wrapper">
       <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
@@ -75,7 +52,7 @@ export const App = () => {
       <div>
         <button onClick={onClick}>Submit</button>
       </div>
-      <iframe ref={iframe} sandbox="allow-scripts" srcDoc={html}></iframe>
+      <Preview code={code} />
     </div>
   );
 };
