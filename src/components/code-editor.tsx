@@ -6,8 +6,9 @@ import { editor } from "monaco-editor";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
 import { MouseEventHandler, useRef } from "react";
-import codeShift from "jscodeshift";
-import Highlighter from "monaco-jsx-highlighter";
+import { parse } from "@babel/parser";
+import traverse from "@babel/traverse";
+import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 interface CodeEditorProps {
   initialValue: string;
@@ -23,18 +24,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     });
 
     monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
-    const highlighter = new Highlighter(
+    const highlighter = new MonacoJSXHighlighter(
       // @ts-ignore
       window.monaco,
-      codeShift,
+      parse,
+      traverse,
       monacoEditor
     );
-    highlighter.highLightOnDidChangeModelContent(
-      () => {},
-      () => {},
-      undefined,
-      () => {}
-    );
+    highlighter.highLightOnDidChangeModelContent(100);
+    highlighter.addJSXCommentCommand();
   };
 
   const onFormatClick: MouseEventHandler<HTMLButtonElement> = () => {

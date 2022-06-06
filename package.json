@@ -8,14 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/parser": "7.16.12",
+    "@babel/traverse": "^7.16.10",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@monaco-editor/react": "^4.4.5",
     "@types/axios": "^0.14.0",
-    "@types/jscodeshift": "^0.11.5",
+    "@types/babel__traverse": "^7.17.1",
     "@types/prettier": "^2.6.3",
     "axios": "^0.27.2",
     "bulmaswatch": "^0.8.1",
     "esbuild-wasm": "^0.14.42",
-    "jscodeshift": "0.13.1",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "monaco-jsx-highlighter": "^2.0.4",

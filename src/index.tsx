@@ -45,10 +45,6 @@ export const App = () => {
   return (
     <div className="editor-wrapper">
       <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      ></textarea>
       <div>
         <button onClick={onClick}>Submit</button>
       </div>
