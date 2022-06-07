@@ -53,7 +53,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   };
 
   return (
-    <div>
+    // without overflow: auto, monaco editor performance when resizing is horrible
+    <div className="editor-wrapper" style={{ overflow: "auto" }}>
       <button
         className="button button-format is-primary is-small"
         onClick={onFormatClick}
@@ -65,7 +66,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
         value={initialValue}
         language="javascript"
         theme="vs-dark"
-        height="500px"
+        height="100%"
         options={{
           wordWrap: "on",
           minimap: { enabled: false },
@@ -74,7 +75,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
           lineNumbersMinChars: 3,
           fontSize: 16,
           scrollBeyondLastLine: false,
-          automaticLayout: true,
         }}
       />
     </div>

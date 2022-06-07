@@ -338,6 +338,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-resizable@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-resizable/-/react-resizable-3.0.0.tgz#ff5b7e2560c2f41ce0973834bc69b7e8ea368bfd"
+  integrity sha512-x3pBRgYVjdpnUEcE+gEgzin07y8MQr6HrSGn81XY1Hc2XTSmHOkoHgJtDo5oKmQj7QIyP5Oau50yv1RpksGHaA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.0.0":
   version "18.0.9"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.9.tgz#d6712a38bd6cd83469603e7359511126f122e878"
@@ -1076,6 +1083,11 @@ prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.13.1"
+
+re-resizable@^6.9.9:
+  version "6.9.9"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.9.tgz#99e8b31c67a62115dc9c5394b7e55892265be216"
+  integrity sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA==
 
 react-dom@^18.0.0:
   version "18.1.0"
