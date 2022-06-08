@@ -19,12 +19,13 @@ export const CodeCell = () => {
         style={{
           height: "100%",
           width: "100%",
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
+          display: "flex",
+          flexDirection: "row",
         }}
       >
-        <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
-        {/* <div style={{ backgroundColor: "white" }} /> */}
+        <ResizableBox direction="horizontal">
+          <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
+        </ResizableBox>
         <Preview code={code} />
       </div>
     </ResizableBox>
