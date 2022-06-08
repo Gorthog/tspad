@@ -8,7 +8,7 @@ const bundle = async (code: string) => {
   if (!initialized) {
     await esbuild.initialize({
       worker: true,
-      wasmURL: "https://www.unpkg.com/esbuild-wasm/esbuild.wasm",
+      wasmURL: "https://www.unpkg.com/esbuild-wasm@0.14.42/esbuild.wasm",
     });
 
     initialized = true;
@@ -23,7 +23,6 @@ const bundle = async (code: string) => {
       global: "windows",
     },
   });
-
   return result.outputFiles[0].text;
 };
 
