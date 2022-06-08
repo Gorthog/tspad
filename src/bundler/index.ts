@@ -14,16 +14,22 @@ const bundle = async (code: string) => {
     initialized = true;
   }
 
-  const result = await esbuild.build({
-    entryPoints: ["index.js"],
-    bundle: true,
-    write: false,
-    plugins: [unpkPathPlugin(), fetchPlugin(code)],
-    define: {
-      global: "windows",
-    },
-  });
-  return result.outputFiles[0].text;
+  try {
+    const result = await esbuild.build({
+      entryPoints: ["index.js"],
+      bundle: true,
+      write: false,
+      plugins: [unpkPathPlugin(), fetchPlugin(code)],
+      define: {
+        global: "windows",
+      },
+    });
+    return { code: result.outputFiles[0].text };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
+    } else return { error: JSON.stringify(err) };
+  }
 };
 
 export default bundle;

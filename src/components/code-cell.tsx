@@ -5,13 +5,15 @@ import bundle from "../bundler";
 import ResizableBox from "./resizable";
 
 export const CodeCell = () => {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState<string | undefined>("");
+  const [err, setErr] = useState<string | undefined>("");
   const [input, setInput] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(async () => {
       const output = await bundle(input);
-      setCode(output);
+      setCode(output.code);
+      setErr(output.error);
     }, 1000);
 
     return () => {
@@ -32,7 +34,7 @@ export const CodeCell = () => {
         <ResizableBox direction="horizontal">
           <CodeEditor initialValue="" onChange={(value) => setInput(value)} />
         </ResizableBox>
-        <Preview code={code} />
+        <Preview code={code} err={err} />
       </div>
     </ResizableBox>
   );
