@@ -67,14 +67,7 @@ const ResizableBox: React.FC<ResizableBoxProps> = ({
     };
   }
 
-  return (
-    <Resizable
-      // style={{ overflowY: "hidden", overflowX: "hidden" }}
-      {...resizableProps}
-    >
-      {children}
-    </Resizable>
-  );
+  return <Resizable {...resizableProps}>{children}</Resizable>;
 };
 
 export default ResizableBox;
