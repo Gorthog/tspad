@@ -30,7 +30,7 @@ const ResizableBox: React.FC<ResizableBoxProps> = ({
       className: "resizable-horizontal",
       defaultSize: { height: "100%", width: "70vw" },
       minWidth: "20vw",
-      maxWidth: "75vw",
+      maxWidth: "70vw",
       enable: {
         top: false,
         right: true,
@@ -50,7 +50,7 @@ const ResizableBox: React.FC<ResizableBoxProps> = ({
       className: "resizable-vertical",
       defaultSize: { height: 300, width: "100%" },
       minHeight: "10vh",
-      maxHeight: "90vh",
+      maxHeight: "80vh",
       enable: {
         top: false,
         right: false,

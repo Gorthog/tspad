@@ -5,7 +5,7 @@ type CellType = "code" | "text";
 
 type Direction = "up" | "down";
 
-type Cell = {
+export type Cell = {
   id: string;
   type: CellType;
   content: string;
@@ -29,57 +29,81 @@ const cellsSlice = createSlice({
   name: "cells",
   initialState,
   reducers: {
-    moveCell: (
-      state,
-      action: PayloadAction<{ id: string; direction: Direction }>
-    ) => {
-      const { direction } = action.payload;
-      const { order } = state;
-      const index = order.indexOf(action.payload.id);
-      const targetIndex = direction === "up" ? index - 1 : index + 1;
-      if (targetIndex < 0 || targetIndex >= order.length) {
-        return;
-      }
+    moveCell: {
+      reducer: (
+        state,
+        action: PayloadAction<{ id: string; direction: Direction }>
+      ) => {
+        const { direction } = action.payload;
+        const { order } = state;
+        const index = order.indexOf(action.payload.id);
+        const targetIndex = direction === "up" ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= order.length) {
+          return;
+        }
 
-      order[index] = order[targetIndex];
-      order[targetIndex] = action.payload.id;
+        order[index] = order[targetIndex];
+        order[targetIndex] = action.payload.id;
+      },
+      prepare: (id: string, direction: Direction) => {
+        return {
+          payload: { id, direction },
+        };
+      },
     },
-    deleteCell: (state, action: PayloadAction<string>) => {
-      let { order, data } = state;
-
-      delete data[action.payload];
-      order = order.filter((id) => id !== action.payload);
+    deleteCell: {
+      reducer: (state, action: PayloadAction<string>) => {
+        let { order, data } = state;
+        console.log("deleteCell", action.payload);
+        delete data[action.payload];
+        const index = order.findIndex((id) => id === action.payload);
+        if (index > -1) order.splice(index, 1);
+      },
+      prepare: (id: string) => {
+        return {
+          payload: id,
+        };
+      },
     },
-    insertCellBefore: (
-      state,
-      action: PayloadAction<{ id: string | null; cellType: CellType }>
-    ) => {
-      const newCell: Cell = {
-        id: nanoid(),
-        type: action.payload.cellType,
-        content: "",
-      };
+    insertCellAfter: {
+      reducer: (
+        state,
+        action: PayloadAction<{ id: string | null; cellType: CellType }>
+      ) => {
+        const newCell: Cell = {
+          id: nanoid(),
+          type: action.payload.cellType,
+          content: "",
+        };
 
-      const { order, data } = state;
+        const { order, data } = state;
 
-      data[newCell.id] = newCell;
+        data[newCell.id] = newCell;
 
-      const foundIndex = order.findIndex((id) => id === action.payload.id);
-      if (foundIndex < 0) {
-        order.splice(foundIndex, 0, newCell.id);
-      } else order.push(newCell.id);
+        const foundIndex = order.findIndex((id) => id === action.payload.id);
+        if (foundIndex < 0) {
+          order.unshift(newCell.id);
+        } else order.splice(foundIndex + 1, 0, newCell.id);
+      },
+      prepare: (id: string | null, cellType: CellType) => {
+        return { payload: { id, cellType } };
+      },
     },
-    updateCell: (
-      state,
-      action: PayloadAction<{ id: string; content: string }>
-    ) => {
-      const { id, content } = action.payload;
-      state.data[id].content = content;
+    updateCell: {
+      reducer: (
+        state,
+        action: PayloadAction<{ id: string; content: string }>
+      ) => {
+        const { id, content } = action.payload;
+        state.data[id].content = content;
+      },
+      prepare: (id: string, content: string) => {
+        return { payload: { id, content } };
+      },
     },
   },
 });
 
-export const { deleteCell, insertCellBefore, moveCell, updateCell } =
-  cellsSlice.actions;
+export const cellsActions = cellsSlice.actions;
 
 export const cellsReducer = cellsSlice.reducer;
