@@ -1,32 +1,33 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
-import bundle from "../bundler";
 import ResizableBox from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks";
+import { useAppSelector } from "../hooks";
+import "./code-cell.css";
 
 type CodeCellProps = {
   cell: Cell;
 };
 
 export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState<string | undefined>("");
-  const [err, setErr] = useState<string | undefined>("");
-  const [input, setInput] = useState("");
-  const { updateCell } = useActions();
+  const { updateCell, createBundle } = useActions();
+  const bundle = useAppSelector((state) => state.bundles.data[cell.id]);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const output = await bundle(cell.content);
-      setCode(output.code);
-      setErr(output.error);
-    }, 1000);
+    if (!bundle) {
+      createBundle({ cellId: cell.id, input: cell.content });
+      return;
+    }
 
+    const timer = setTimeout(async () => {
+      createBundle({ cellId: cell.id, input: cell.content });
+    }, 750);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+  }, [cell.id, cell.content, createBundle]);
 
   return (
     <ResizableBox direction="vertical">
@@ -44,7 +45,17 @@ export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={(value) => updateCell(cell.id, value)}
           />
         </ResizableBox>
-        <Preview code={code} err={err} />
+        <div className="progress-wrapper">
+          {!bundle || bundle.loading ? (
+            <div className="progress-cover">
+              <progress max="100" className="progress is-small is-primary">
+                Loading
+              </progress>
+            </div>
+          ) : (
+            <Preview code={bundle.code} err={bundle.error} />
+          )}
+        </div>
       </div>
     </ResizableBox>
   );
