@@ -5,6 +5,7 @@ import ResizableBox from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks";
 import { useAppSelector } from "../hooks";
+import { useCumulativeCode } from "../hooks/use-cumulative-code";
 import "./code-cell.css";
 
 type CodeCellProps = {
@@ -14,20 +15,21 @@ type CodeCellProps = {
 export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions();
   const bundle = useAppSelector((state) => state.bundles.data[cell.id]);
+  const cumulativeCode = useCumulativeCode(cell.id);
 
   useEffect(() => {
     if (!bundle) {
-      createBundle({ cellId: cell.id, input: cell.content });
+      createBundle({ cellId: cell.id, input: cumulativeCode });
       return;
     }
 
     const timer = setTimeout(async () => {
-      createBundle({ cellId: cell.id, input: cell.content });
+      createBundle({ cellId: cell.id, input: cumulativeCode });
     }, 750);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.id, cell.content, createBundle]);
+  }, [cell.id, cumulativeCode, createBundle]);
 
   return (
     <ResizableBox direction="vertical">

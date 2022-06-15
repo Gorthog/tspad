@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { useAppSelector } from "../hooks/hooks";
 import CellListItem from "./cell-list-item";
 import AddCell from "./add-cell";
+import "./cell-list.css";
 
 const CellList: React.FC = () => {
   const cells = useAppSelector(({ cells: { order, data } }) =>
@@ -16,7 +17,7 @@ const CellList: React.FC = () => {
   ));
 
   return (
-    <div>
+    <div className="cell-list">
       <AddCell previousCellId={null} forceVisible={renderedCells.length == 0} />
       {renderedCells}
     </div>

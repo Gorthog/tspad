@@ -23,6 +23,8 @@ const bundle = async (code: string) => {
       define: {
         global: "windows",
       },
+      jsxFactory: "_React.createElement",
+      jsxFragment: "_React.Fragment",
     });
     return { code: result.outputFiles[0].text };
   } catch (err) {
