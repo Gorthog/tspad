@@ -1,0 +1,17 @@
+0 silly argv {
+0 silly argv   _: [ 'add' ],
+0 silly argv   scope: 'local-api',
+0 silly argv   globs: [],
+0 silly argv   lernaVersion: '5.1.4',
+0 silly argv   '$0': '/usr/local/bin/lerna',
+0 silly argv   pkg: 'local-client'
+0 silly argv }
+1 notice cli v5.1.4
+2 verbose rootPath /home/amir/projects/web-ide
+3 error Error: Invalid package name "local-api ": name cannot contain leading or trailing spaces; name can only contain URL-friendly characters
+3 error     at invalidPackageName (/home/amir/projects/web-ide/packages/local-client/node_modules/npm-package-arg/npa.js:84:15)
+3 error     at Result.setName (/home/amir/projects/web-ide/packages/local-client/node_modules/npm-package-arg/npa.js:119:11)
+3 error     at new Result (/home/amir/projects/web-ide/packages/local-client/node_modules/npm-package-arg/npa.js:110:10)
+3 error     at Function.resolve (/home/amir/projects/web-ide/packages/local-client/node_modules/npm-package-arg/npa.js:54:15)
+3 error     at new Package (/home/amir/projects/web-ide/packages/local-client/node_modules/@lerna/package/index.js:95:26)
+3 error     at /home/amir/projects/web-ide/packages/local-client/node_modules/@lerna/project/index.js:207:26

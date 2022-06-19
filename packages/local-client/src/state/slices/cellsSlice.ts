@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
+import axios from "axios";
+import { RootState } from "../store";
 
 type CellType = "code" | "text";
 
@@ -13,18 +15,35 @@ export type Cell = {
 
 type CellsState = {
   loading: boolean;
-  error: string | null;
+  error?: string;
   order: string[];
   data: { [id: string]: Cell };
 };
 
 const initialState: CellsState = {
   loading: false,
-  error: null,
   order: [],
   data: {},
 };
 
+export const fetchCells = createAsyncThunk<
+  Cell[],
+  void,
+  { rejectValue: Error }
+>("cells/fetch", async () => {
+  const { data } = await axios.get<Cell[]>("/cells");
+  return data;
+});
+
+export const saveCells = createAsyncThunk<
+  void,
+  void,
+  { state: RootState; rejectValue: Error }
+>("cells/save", async (_, { getState }) => {
+  const { data, order } = getState().cells;
+  const cells = order.map((id) => data[id]);
+  await axios.post("/cells", cells);
+});
 const cellsSlice = createSlice({
   name: "cells",
   initialState,
@@ -102,8 +121,33 @@ const cellsSlice = createSlice({
       },
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCells.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = undefined;
+      state.order = action.payload.map((cell) => cell.id);
+      state.data = action.payload.reduce((acc: CellsState["data"], cell) => {
+        acc[cell.id] = cell;
+        return acc;
+      }, {});
+    });
+
+    builder.addCase(fetchCells.pending, (state) => {
+      state.loading = true;
+      state.error = undefined;
+    });
+
+    builder.addCase(fetchCells.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+
+    builder.addCase(saveCells.rejected, (state, action) => {
+      state.error = action.error.message;
+    });
+  },
 });
 
-export const cellsActions = cellsSlice.actions;
+export const cellsActions = { ...cellsSlice.actions, fetchCells, saveCells };
 
 export const cellsReducer = cellsSlice.reducer;
