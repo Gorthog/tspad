@@ -1,13 +1,10 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 import { cellsActions } from "../";
 
-// Create the middleware instance and methods
 const listenerMiddleware = createListenerMiddleware();
 
 let timer: number | undefined;
 
-// Add one or more listener entries that look for specific actions.
-// They may contain any sync or async logic, similar to thunks.
 listenerMiddleware.startListening({
   matcher: isAnyOf(
     cellsActions.moveCell,
