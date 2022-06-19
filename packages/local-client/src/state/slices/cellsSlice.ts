@@ -42,7 +42,8 @@ export const saveCells = createAsyncThunk<
 >("cells/save", async (_, { getState }) => {
   const { data, order } = getState().cells;
   const cells = order.map((id) => data[id]);
-  await axios.post("/cells", cells);
+  console.log("Saving cells:", cells);
+  await axios.post("/cells", { cells });
 });
 const cellsSlice = createSlice({
   name: "cells",
@@ -73,7 +74,6 @@ const cellsSlice = createSlice({
     deleteCell: {
       reducer: (state, action: PayloadAction<string>) => {
         let { order, data } = state;
-        console.log("deleteCell", action.payload);
         delete data[action.payload];
         const index = order.findIndex((id) => id === action.payload);
         if (index > -1) order.splice(index, 1);

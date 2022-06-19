@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { bundlesReducer } from "./slices/bundlesSlice";
 import { cellsReducer } from "./slices/cellsSlice";
-import { persistMiddleware } from "./middleware/persist-middleware";
+import persistMiddleware from "./middleware/persist-middleware";
 
 export const store = configureStore({
   reducer: {
@@ -9,7 +9,7 @@ export const store = configureStore({
     bundles: bundlesReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(persistMiddleware),
+    getDefaultMiddleware().prepend(persistMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

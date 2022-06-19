@@ -1,34 +1,29 @@
-import { createListenerMiddleware } from "@reduxjs/toolkit";
-
-import todosReducer, {
-  todoAdded,
-  todoToggled,
-  todoDeleted,
-} from "../features/todos/todosSlice";
+import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
+import { cellsActions } from "../";
 
 // Create the middleware instance and methods
 const listenerMiddleware = createListenerMiddleware();
 
+let timer: number | undefined;
+
 // Add one or more listener entries that look for specific actions.
 // They may contain any sync or async logic, similar to thunks.
 listenerMiddleware.startListening({
-  actionCreator: todoAdded,
-  effect: async (action, listenerApi) => {
-    // Run whatever additional side-effect-y logic you want here
-    console.log("Todo added: ", action.payload.text);
-
-    // Can cancel other running instances
-    listenerApi.cancelActiveListeners();
-
-    // Run async logic
-    const data = await fetchData();
-
-    // Pause until action dispatched or state changed
-    if (await listenerApi.condition(matchSomeAction)) {
-      // Use the listener API methods to dispatch, get state,
-      // unsubscribe the listener, or cancel previous
-      listenerApi.dispatch(todoAdded("Buy pet food"));
-      listenerApi.unsubscribe();
+  matcher: isAnyOf(
+    cellsActions.moveCell,
+    cellsActions.updateCell,
+    cellsActions.deleteCell,
+    cellsActions.insertCellAfter
+  ),
+  effect: async (_, listenerApi) => {
+    if (timer) {
+      clearTimeout(timer);
     }
+    timer = setTimeout(() => {
+      // @ts-ignore i have no idea why typescript complains about this
+      listenerApi.dispatch(cellsActions.saveCells());
+    }, 1000);
   },
 });
+
+export default listenerMiddleware.middleware;

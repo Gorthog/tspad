@@ -16,6 +16,7 @@ export const createCellsRouter = (filename: string, dir: string) => {
   router.get("/cells", async (_, res) => {
     try {
       const result = await fs.readFile(fullPath, { encoding: "utf-8" });
+      res.send(JSON.parse(result));
     } catch (err: any) {
       if ("code" in err && err.code === "ENOENT") {
         await fs.writeFile(fullPath, "[]", "utf-8");
@@ -29,12 +30,8 @@ export const createCellsRouter = (filename: string, dir: string) => {
   router.post<any, any, { status: string }, { cells: Cell[] }>(
     "/cells",
     async (req, res) => {
-      // Take a list of cells from the request object
-      // serialize them
-
       const cells = req.body.cells;
-
-      await fs.writeFile(fullPath, JSON.stringify(cells), "utf-8");
+      await fs.writeFile(fullPath, JSON.stringify(cells, null, 2), "utf-8");
 
       res.send({ status: "ok" });
     }
