@@ -8,9 +8,9 @@ export const fetchPlugin = (inputCode: string) => {
   return {
     name: "fetch-plugin",
     setup(build: esbuild.PluginBuild) {
-      build.onLoad({ filter: /^index.js$/ }, async () => {
+      build.onLoad({ filter: /^index.ts$/ }, async () => {
         return {
-          loader: "jsx",
+          loader: "tsx",
           contents: inputCode,
         };
       });
@@ -39,7 +39,7 @@ export const fetchPlugin = (inputCode: string) => {
         document.head.appendChild(style);`;
 
         const result: esbuild.OnLoadResult = {
-          loader: "jsx",
+          loader: "tsx",
           contents: contents,
           resolveDir: new URL("./", request.responseURL).pathname,
         };
@@ -54,7 +54,7 @@ export const fetchPlugin = (inputCode: string) => {
         console.log(data);
 
         const result: esbuild.OnLoadResult = {
-          loader: "jsx",
+          loader: "tsx",
           contents: data,
           resolveDir: new URL("./", request.responseURL).pathname,
         };

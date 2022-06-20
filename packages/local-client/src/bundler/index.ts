@@ -16,7 +16,7 @@ const bundle = async (code: string) => {
 
   try {
     const result = await esbuild.build({
-      entryPoints: ["index.js"],
+      entryPoints: ["index.ts"],
       bundle: true,
       write: false,
       plugins: [unpkPathPlugin(), fetchPlugin(code)],

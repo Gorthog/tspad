@@ -42,7 +42,6 @@ export const saveCells = createAsyncThunk<
 >("cells/save", async (_, { getState }) => {
   const { data, order } = getState().cells;
   const cells = order.map((id) => data[id]);
-  console.log("Saving cells:", cells);
   await axios.post("/cells", { cells });
 });
 const cellsSlice = createSlice({

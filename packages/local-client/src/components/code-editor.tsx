@@ -5,9 +5,8 @@ import { editor } from "monaco-editor";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
 import { MouseEventHandler, useRef } from "react";
-import { parse } from "@babel/parser";
-import traverse from "@babel/traverse";
-import MonacoJSXHighlighter from "monaco-jsx-highlighter";
+import { nanoid } from "nanoid";
+import axios from "axios";
 
 interface CodeEditorProps {
   initialValue: string;
@@ -16,22 +15,51 @@ interface CodeEditorProps {
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
-  const onMount: OnMount = (monacoEditor) => {
-    editorRef.current = monacoEditor;
+  const onMount: OnMount = (monacoEditor, monaco) => {
     monacoEditor.onDidChangeModelContent(() => {
       onChange(monacoEditor.getValue());
     });
 
-    monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
-    const highlighter = new MonacoJSXHighlighter(
-      // @ts-ignore
-      window.monaco,
-      parse,
-      traverse,
-      monacoEditor
+    async function getReactTypes() {
+      const { data } = await axios.get<string>(
+        "https://unpkg.com/@types/react/index.d.ts"
+      );
+
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        data,
+        `file:///node_modules/@react/types/index.d.ts`
+      );
+    }
+
+    const id = nanoid();
+    const newModel = monaco.editor.createModel(
+      monacoEditor.getValue(),
+      "typescript",
+      monaco.Uri.parse(`${id}.tsx`)
     );
-    highlighter.highLightOnDidChangeModelContent(100);
-    highlighter.addJSXCommentCommand();
+    monacoEditor.getModel()?.dispose();
+
+    newModel.updateOptions({ tabSize: 2 });
+
+    monacoEditor.setModel(newModel);
+
+    monaco.languages.typescript.typescriptDefaults.addExtraLib(
+      `
+        /** show function is a helper function that can render JSX, string or numbers. */
+        const show = (input: number | string | Object): void
+        `,
+      "show.ts"
+    );
+
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      jsx: monaco.languages.typescript.JsxEmit.Preserve,
+      target: monaco.languages.typescript.ScriptTarget.ES2020,
+      esModuleInterop: true,
+    });
+
+    editorRef.current = monacoEditor;
+
+    getReactTypes();
   };
 
   const onFormatClick: MouseEventHandler<HTMLButtonElement> = () => {
@@ -62,7 +90,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
       <MonacoEditor
         onMount={onMount}
         value={initialValue}
-        language="javascript"
+        language="typescript"
         theme="vs-dark"
         height="100%"
         width="100%"
