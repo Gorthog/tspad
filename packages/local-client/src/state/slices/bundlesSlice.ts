@@ -37,14 +37,26 @@ const bundlesSlice = createSlice({
       state.data[action.payload.cellId] = {
         loading: false,
         ...action.payload.bundle,
+        error: undefined,
       };
     });
+
     builder.addCase(createBundle.pending, (state, action) => {
-      state.data[action.meta.arg.cellId] = { loading: true };
+      state.data[action.meta.arg.cellId] = { loading: true, error: undefined };
+    });
+
+    builder.addCase(createBundle.rejected, (state, action) => {
+      state.data[action.meta.arg.cellId] = {
+        loading: false,
+        error: action.payload?.message,
+      };
     });
   },
 });
 
-export const bundlesActions = { ...bundlesSlice.actions, createBundle };
+export const bundlesActions = {
+  ...bundlesSlice.actions,
+  createBundle,
+};
 
 export const bundlesReducer = bundlesSlice.reducer;

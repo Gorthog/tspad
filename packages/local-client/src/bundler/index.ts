@@ -3,15 +3,33 @@ import { fetchPlugin } from "./plugins/fetch-plugin";
 import { unpkPathPlugin } from "./plugins/unpk-path-plugin";
 
 let initialized = false;
+let initializing = false;
+
+function waitForInitialization() {
+  return new Promise<void>((resolve) => {
+    if (initialized) {
+      resolve();
+    } else {
+      setTimeout(() => {
+        waitForInitialization().then(resolve);
+      }, 100);
+    }
+  });
+}
 
 const bundle = async (code: string) => {
+  if (initializing) {
+    await waitForInitialization();
+  }
+
   if (!initialized) {
+    initializing = true;
     await esbuild.initialize({
       worker: true,
       wasmURL: "https://www.unpkg.com/esbuild-wasm@0.14.42/esbuild.wasm",
     });
-
     initialized = true;
+    initializing = false;
   }
 
   try {
