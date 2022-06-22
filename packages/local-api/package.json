@@ -1,6 +1,6 @@
 {
   "name": "@ts-note/local-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "license": "MIT",
   "types": "dist/index.d.ts",
@@ -18,10 +18,10 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
+    "@ts-note/local-client": "^0.0.1",
     "cors": "^2.8.5",
     "express": "^4.18.1",
-    "http-proxy-middleware": "^2.0.6",
-    "@ts-note/local-client": "^0.0.0"
+    "http-proxy-middleware": "^2.0.6"
   },
   "files": [
     "dist"
