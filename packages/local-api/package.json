@@ -1,11 +1,15 @@
 {
-  "name": "local-api",
+  "name": "@ts-note/local-api",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinapis/ts-note"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -16,6 +20,6 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "http-proxy-middleware": "^2.0.6",
-    "local-client": "^0.0.0"
+    "@ts-note/local-client": "^0.0.0"
   }
 }

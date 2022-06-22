@@ -1,5 +1,5 @@
 {
-  "name": "local-client",
+  "name": "@ts-note/local-client",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -7,6 +7,10 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinapis/ts-note"
   },
   "dependencies": {
     "@babel/parser": "7.16.12",

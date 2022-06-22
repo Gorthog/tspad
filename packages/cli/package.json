@@ -1,13 +1,17 @@
 {
-  "name": "cli",
+  "name": "ts-note",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinapis/ts-note"
+  },
   "dependencies": {
     "commander": "^9.3.0",
-    "local-api": "^1.0.0"
+    "@ts-note/local-api": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

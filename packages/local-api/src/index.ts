@@ -23,7 +23,9 @@ export const serve = (
     );
   } else {
     // express does not work with symlinked directories. this is the reason we resolve the path to a file and then take the directory
-    const packagePath = require.resolve("local-client/dist/index.html");
+    const packagePath = require.resolve(
+      "@ts-note/local-client/dist/index.html"
+    );
     app.use(express.static(path.dirname(packagePath)));
   }
 
