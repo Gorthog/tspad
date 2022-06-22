@@ -1,5 +1,5 @@
 {
-  "name": "ts-note",
+  "name": "tspad",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -8,13 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sinapis/ts-note"
+    "url": "https://github.com/sinapis/tspad"
   },
   "dependencies": {
-    "@ts-note/local-client": "^1.0.0"
+    "@tspad/local-api": "^0.0.1",
+    "@tspad/local-client": "^0.0.1"
   },
   "devDependencies": {
-    "@ts-note/local-api": "^0.0.1",
+    "@tspad/local-api": "^0.0.1",
     "@types/node": "^18.0.0",
     "commander": "^9.3.0",
     "esbuild": "^0.14.47",
@@ -26,5 +27,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "bin": "dist/index.js"
+  "bin": "dist/index.js",
+  "gitHead": "a3e543c4e43ae3f53e5b595fa5d9773fbd1afdf7"
 }

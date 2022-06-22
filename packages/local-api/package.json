@@ -1,5 +1,5 @@
 {
-  "name": "@ts-note/local-api",
+  "name": "@tspad/local-api",
   "version": "0.0.1",
   "main": "dist/index.js",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sinapis/ts-note"
+    "url": "https://github.com/sinapis/tspad"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -18,7 +18,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@ts-note/local-client": "^0.0.1",
+    "@tspad/local-client": "^0.0.1",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "http-proxy-middleware": "^2.0.6"
@@ -28,5 +28,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "a3e543c4e43ae3f53e5b595fa5d9773fbd1afdf7"
 }

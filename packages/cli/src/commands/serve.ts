@@ -1,6 +1,6 @@
 import path from "path";
 import { Command } from "commander";
-import { serve } from "@ts-note/local-api";
+import { serve } from "@tspad/local-api";
 
 const isProduction = process.env.NODE_ENV === "production";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@ts-note/local-client",
+  "name": "@tspad/local-client",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sinapis/ts-note"
+    "url": "https://github.com/sinapis/tspad"
   },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
@@ -52,5 +52,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "a3e543c4e43ae3f53e5b595fa5d9773fbd1afdf7"
 }
