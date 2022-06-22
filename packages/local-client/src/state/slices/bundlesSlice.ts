@@ -37,7 +37,6 @@ const bundlesSlice = createSlice({
       state.data[action.payload.cellId] = {
         loading: false,
         ...action.payload.bundle,
-        error: undefined,
       };
     });
 
