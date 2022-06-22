@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.8.2",
     "@rollup/plugin-inject": "^4.0.4",
     "@uiw/react-md-editor": "^3.14.1",
+    "async-mutex": "^0.3.2",
     "axios": "^0.27.2",
     "buffer": "^6.0.3",
     "bulmaswatch": "^0.8.1",

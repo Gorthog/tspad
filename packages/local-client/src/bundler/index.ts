@@ -1,36 +1,21 @@
 import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import { unpkPathPlugin } from "./plugins/unpk-path-plugin";
+import { Mutex } from "async-mutex";
 
 let initialized = false;
-let initializing = false;
-
-function waitForInitialization() {
-  return new Promise<void>((resolve) => {
-    if (initialized) {
-      resolve();
-    } else {
-      setTimeout(() => {
-        waitForInitialization().then(resolve);
-      }, 100);
-    }
-  });
-}
+const mutex = new Mutex();
 
 const bundle = async (code: string) => {
-  if (initializing) {
-    await waitForInitialization();
-  }
-
-  if (!initialized) {
-    initializing = true;
-    await esbuild.initialize({
-      worker: true,
-      wasmURL: "https://www.unpkg.com/esbuild-wasm@0.14.42/esbuild.wasm",
-    });
-    initialized = true;
-    initializing = false;
-  }
+  await mutex.runExclusive(async () => {
+    if (!initialized) {
+      await esbuild.initialize({
+        worker: true,
+        wasmURL: "https://www.unpkg.com/esbuild-wasm@0.14.42/esbuild.wasm",
+      });
+      initialized = true;
+    }
+  });
 
   try {
     const result = await esbuild.build({
