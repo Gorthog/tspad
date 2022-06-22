@@ -1,6 +1,6 @@
 {
   "name": "tspad",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput",
@@ -11,8 +11,8 @@
     "url": "https://github.com/sinapis/tspad"
   },
   "dependencies": {
-    "@tspad/local-api": "^0.0.2",
-    "@tspad/local-client": "^0.0.2"
+    "@tspad/local-api": "^0.0.3",
+    "@tspad/local-client": "^0.0.3"
   },
   "devDependencies": {
     "@tspad/local-api": "^0.0.1",
