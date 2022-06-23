@@ -1,6 +1,6 @@
 # tspad
 
-This is an interactive coding environment. You can write Typescript, see it executed, and write comprehensive documentation using markdown.
+This is an interactive coding environment in the browser. You can write Typescript, see it executed, and write comprehensive documentation using markdown.
 
 - Click any text cell (**including this one**) to edit it
 - You can import variables or components from other cells. The editor will even give you a suggestion for quick fix if it finds a symbol that exists in another cell.
