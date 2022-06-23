@@ -77,7 +77,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     if (unformatted) {
       const formatted = prettier
         .format(unformatted, {
-          parser: "babel",
+          parser: "babel-ts",
           plugins: [parser],
           useTabs: false,
           semi: true,
