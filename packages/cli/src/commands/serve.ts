@@ -8,7 +8,7 @@ export const serveCommand = new Command()
   .command("serve [filename]")
   .description("Open a file for editing")
   .option("-p, --port <number>", "Port to run server on", "4005")
-  .action(async (filename = "notebook.js", options: { port: string }) => {
+  .action(async (filename = "notebook.json", options: { port: string }) => {
     const port = parseInt(options.port);
     const dir = path.join(process.cwd(), path.dirname(filename));
     try {

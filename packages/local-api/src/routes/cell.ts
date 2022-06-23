@@ -1,6 +1,7 @@
 import express from "express";
 import fs from "fs/promises";
 import path from "path";
+import defaultPad from "../defaultPad";
 
 type Cell = {
   id: string;
@@ -19,8 +20,12 @@ export const createCellsRouter = (filename: string, dir: string) => {
       res.send(JSON.parse(result));
     } catch (err: any) {
       if ("code" in err && err.code === "ENOENT") {
-        await fs.writeFile(fullPath, "[]", "utf-8");
-        res.send([]);
+        await fs.writeFile(
+          fullPath,
+          JSON.stringify(defaultPad, null, 2),
+          "utf-8"
+        );
+        res.send(defaultPad);
       } else {
         throw err;
       }
