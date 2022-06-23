@@ -11,6 +11,7 @@ const CellList: React.FC = () => {
   const cells = useAppSelector(({ cells: { order, data } }) =>
     order.map((id) => data[id])
   );
+
   useEffect(() => {
     fetchCells();
   }, []);
