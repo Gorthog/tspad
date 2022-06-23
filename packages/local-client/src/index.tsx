@@ -8,8 +8,8 @@ import { KeyboardEventHandler, useEffect } from "react";
 export const App = () => {
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
-      event.preventDefault();
       if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
         alert(
           "Content is being saved automatically on change. No need to save it manually."
         );
