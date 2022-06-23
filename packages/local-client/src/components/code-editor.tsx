@@ -11,9 +11,14 @@ import axios from "axios";
 interface CodeEditorProps {
   initialValue: string;
   onChange: (value: string) => void;
+  priorCode: string[];
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({
+  initialValue,
+  onChange,
+  priorCode,
+}) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
   const onMount: OnMount = (monacoEditor, monaco) => {
     monacoEditor.onDidChangeModelContent(() => {
@@ -27,7 +32,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         data,
-        `file:///node_modules/@react/types/index.d.ts`
+        `file:///node_modules/@types/react/index.d.ts`
       );
     }
 
@@ -48,13 +53,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
         /** show function is a helper function that can render JSX, string or numbers. */
         const show = (input: number | string | Object): void
         `,
-      "show.ts"
+      "show.d.ts"
     );
+
+    for (let i = 0; i < priorCode.length; i++) {
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        priorCode[i],
+        `file:///cell${i}.d.ts`
+      );
+    }
 
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.Preserve,
-      target: monaco.languages.typescript.ScriptTarget.ES2020,
-      esModuleInterop: true,
     });
 
     editorRef.current = monacoEditor;

@@ -1,7 +1,7 @@
 import { useAppSelector } from "./hooks";
 
 export const useCumulativeCode = (cellId: string) => {
-  return useAppSelector((state) => {
+  const cumulativeCodeArray = useAppSelector((state) => {
     const { data, order } = state.cells;
     const orderedCells = order.map((id) => data[id]);
 
@@ -38,5 +38,11 @@ export const useCumulativeCode = (cellId: string) => {
       }
     }
     return cumulativeCode;
-  }).join("\n");
+  });
+  const priorCode = cumulativeCodeArray.slice(0, -1);
+  const cumulativeCode = cumulativeCodeArray
+    .join("\n")
+    // this is a workaround for bundler error seeing the same symbol twice
+    .replaceAll(/import.*\s+from\s+['"]\.\/cell\d+['"]/g, "");
+  return { cumulativeCode, priorCode };
 };

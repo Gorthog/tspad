@@ -15,7 +15,7 @@ export const fetchPlugin = (inputCode: string) => {
         };
       });
 
-      build.onLoad({ filter: /.*/ }, async (args: any) => {
+      build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
         const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(
           args.path
         );
@@ -24,9 +24,8 @@ export const fetchPlugin = (inputCode: string) => {
         }
       });
 
-      build.onLoad({ filter: /\.css$/ }, async (args: any) => {
+      build.onLoad({ filter: /\.css$/ }, async (args: esbuild.OnLoadArgs) => {
         const { data, request } = await axios.get(args.path);
-        console.log(data);
 
         const escaped = data
           .replace(/\n/g, " ")
@@ -49,9 +48,8 @@ export const fetchPlugin = (inputCode: string) => {
         return result;
       });
 
-      build.onLoad({ filter: /.*/ }, async (args: any) => {
+      build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
         const { data, request } = await axios.get(args.path);
-        console.log(data);
 
         const result: esbuild.OnLoadResult = {
           loader: "tsx",
